@@ -39,10 +39,31 @@ class Mongki
   validates_length_of :password, minimum: 6, maximum: 15, :message => "PASSWORD_INVALID"
 
   # validate of terms
-  validates_acceptance_of :terms, :allow_nil => false, :accept => true, :message => "TERMS_REQUIRED"
+  #validates_acceptance_of :terms, :allow_nil => false, :accept => true, :message => "TERMS_REQUIRED"
 
-  before_save(encrypt_password)
+  before_save :encrypt_password
 
+  def self.find_by_email(email)
+    Mongki.find_by(email: email)
+  end
+
+  def self.find_by_phone(phone)
+    Mongki.find_by(phone: phone)
+  end
+
+  def self.authenticate(email, password)
+    user = find_by_email(email)
+    password = Password.create(password)
+
+    if user[:password_encrypt] == password
+      true
+    else
+      false
+    end
+  end
+
+  protected
+  # encrypt password
   def encrypt_password
     self.password_encrypt = Password.create(:password)
   end
