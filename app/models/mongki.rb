@@ -27,8 +27,7 @@ class Mongki
 
   # validate of name
   validates_presence_of :name, :message => "NAME_REQUIRED"
-  validates_length_of :name, minimum: 3, maximum: 15, :message => "NAME_INVALID"
-  validates_format_of :name, with: /[a-z0-9\-_]+/i, :message => "NAME_INVAILD"
+  validates_format_of :name, with: /[a-z0-9\-_]{3, 15}/i, :message => "NAME_INVAILD"
   validates_uniqueness_of :name, :message => "NAME_EXISTS"
 
   # validate of phone
