@@ -1,0 +1,2 @@
+module MongkisHelper
+end

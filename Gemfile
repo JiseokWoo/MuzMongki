@@ -46,3 +46,6 @@ gem 'mongoid'
 
 # Password Encryption
 gem 'bcrypt'
+
+# for Design
+gem 'bootstrap-sass'
