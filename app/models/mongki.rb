@@ -1,4 +1,5 @@
 require 'bcrypt'
+require 'digest/sha2'
 
 # TODO : Terms for Muzmongki service
 
@@ -13,6 +14,8 @@ class Mongki
   field :name, type: String, default: nil
   field :password_encrypt, type: String, default: nil
 
+  field :token, type: String, default: nil
+
   field :house, type: BSON::ObjectId, default: nil
   
   field :email_confirm, type: Boolean, default: false
@@ -21,15 +24,19 @@ class Mongki
   field :phone_confirm_text, type: String, default: nil
   #field :terms, type: BSON::ObjectId
 
+  before_create :create_token
+  before_validation :downcase_field
+  before_save :encrypt_password
+
   # validate of email
   validates_presence_of :email, :message => "Address is REQUIRED!"
   validates_format_of :email, with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, :message => "Address is INVALID!"
-  validates_uniqueness_of :email, :message => "Address is already EXISTS!"
+  validates_uniqueness_of :email, :case_sensitive => false, :message => "Address is already EXISTS!"
 
-  # validate of id
+  # validate of name
   validates_presence_of :name, :message => "is REQUIRED!"
   validates_format_of :name, with: /[a-z0-9\-_]{3,15}/i, :message => "is INVALID!"
-  validates_uniqueness_of :name, :message => "is already EXISTS!"
+  validates_uniqueness_of :name, :case_sensitive => false, :message => "is already EXISTS!"
   #validates_exclusion_of :name, in: ProhibitedWord, :message => "contains Prohibited word!"
 
   # validate of password
@@ -39,42 +46,36 @@ class Mongki
   # validate of terms
   #validates_acceptance_of :terms, :allow_nil => false, :accept => true, :message => "TERMS_REQUIRED"
 
-  before_save :encrypt_password
-
-  def self.find_by_email(email)
-    Mongki.find_by(email: email)
+  def self.new_token
+    SecureRandom.urlsafe_base64
   end
 
-  def self.find_by_name(name)
-    Mongki.find_by(name: name)
+  def self.encrypt_token(token)
+    Digest::SHA2.hexdigest(token.to_s)
   end
 
-  def self.authenticate(email, password)
-    user = find_by_email(email)
-    password = Password.create(password)
+  def authenticate(password)
+    password = BCrypt::Engine.hash_secret(password, $mongki_salt)
 
-    if user[:password_encrypt] == password
+    if (password == self.password_encrypt)
       true
     else
       false
     end
   end
 
-  def self.authenticate(name, password)
-    user = find_by_name(name)
-    password = Password.create(password)
+  private
 
-    if user[:password_encrypt] == password
-      true
-    else
-      false
-    end
+  def create_token
+    self.token= Mongki.encrypt_token(Mongki.new_token)
   end
 
-  protected
-  # encrypt password
   def encrypt_password
-    self.password_encrypt = Password.create(:password)
+    self.password_encrypt= BCrypt::Engine.hash_secret(password, $mongki_salt)
+  end
+
+  def downcase_field
+    self.email= self.email.downcase
   end
 
 end

@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  root 'home#index'
+
+  get 'signup' => 'mongkis#new'
+  get 'login' => 'login#new'
+  post 'login' => 'login#create'
+  delete 'logout' => 'login#destroy'
   resources :mongkis
 
   # The priority is based upon order of creation: first created -> highest priority.

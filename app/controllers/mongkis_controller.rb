@@ -8,7 +8,8 @@ class MongkisController < ApplicationController
   def show
     # get '/mongkis/id'
     # page to show mongki with id
-    @mongki = Mongki.find_by_email(params[:email])
+    email = params[:email]
+    @mongki = Mongki.find_by(email: email)
   end
 
   def new

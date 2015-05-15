@@ -1,0 +1,22 @@
+<header>
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+            <img alt="MuzMongki" src="<%= image_url('ci_50x140.png') %>">
+          </a>
+        </div>
+        <% if logged_in? %>
+            <ul class="nav navbar-nav navbar-right">
+              <li><%= link_to "Edit", edit_mongki_path(session[:email]) %></li>
+              <li><%= link_to "Logout", logout_path, method: "delete" %></li>
+            </ul>
+        <% else %>
+            <ul class="nav navbar-nav navbar-right">
+              <li><%= link_to "Login", login_path %></li>
+              <li><%= button_to "Join", signup_path, method: "get", class: "btn btn-default navbar-btn" %></li>
+            </ul>
+        <% end %>
+      </div>
+    </nav>
+</header>
