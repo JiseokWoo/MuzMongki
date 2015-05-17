@@ -1,20 +1,20 @@
 <header>
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default navbar-yellow">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href=<%= root_path %>>
             <img alt="MuzMongki" src="<%= image_url('ci_50x140.png') %>">
           </a>
         </div>
         <% if logged_in? %>
             <ul class="nav navbar-nav navbar-right">
-              <li><%= link_to "Edit", edit_mongki_path(session[:email]) %></li>
-              <li><%= link_to "Logout", logout_path, method: "delete" %></li>
+              <li><%= link_to "정보수정", edit_mongki_path(session[:id]) %></li>
+              <li><%= link_to "로그아웃", logout_path, method: "delete" %></li>
             </ul>
         <% else %>
             <ul class="nav navbar-nav navbar-right">
-              <li><%= link_to "Login", login_path %></li>
-              <li><%= button_to "Join", signup_path, method: "get", class: "btn btn-default navbar-btn" %></li>
+              <li><%= link_to "로그인", login_path %></li>
+              <li><%= button_to "회원가입", signup_path, method: "get", class: "btn btn-default navbar-btn" %></li>
             </ul>
         <% end %>
       </div>
