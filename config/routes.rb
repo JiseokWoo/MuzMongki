@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'login' => 'login#new'
   post 'login' => 'login#create'
   delete 'logout' => 'login#destroy'
+  get 'auth' => 'mongkis#auth'
   resources :mongkis
 
   # The priority is based upon order of creation: first created -> highest priority.

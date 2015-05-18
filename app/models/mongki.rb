@@ -38,10 +38,19 @@ class Mongki
 
   # validate of password
   validates_length_of :password, minimum: 6, maximum: 15, :message => "는 6자 이상 15자 이하여야 합니다."
-  validates_confirmation_of :password, :message => "패스워드가 일치하지 않습니다."
+  validates_confirmation_of :password, :message => "가 일치하지 않습니다."
 
   # validate of terms
   #validates_acceptance_of :terms, :allow_nil => false, :accept => true, :message => "TERMS_REQUIRED"
+
+  def self.authenticate(id, password)
+    mongki = Mongki.find_by(id: id)
+    if mongki && mongki.authenticate(password)
+      true
+    else
+      false
+    end
+  end
 
   def authenticate(password)
     password = BCrypt::Engine.hash_secret(password, $mongki_salt)
