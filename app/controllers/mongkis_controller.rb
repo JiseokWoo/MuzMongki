@@ -1,5 +1,7 @@
 class MongkisController < ApplicationController
-  before_action :check_login, only: [:edit, :update, :destroy]
+  include MongkisHelper
+  before_action :check_login, only: [:edit, :update, :destroy, :auth]
+
   def index
     # get '/mongkis' mongkis_path
     # page to list all mongkis
@@ -44,7 +46,12 @@ class MongkisController < ApplicationController
 
     if @mongki
       if params[:mongki][:password].empty? and params[:mongki][:password_confirmation].empty?
-        update?(@mongki.update_attributes(name: params[:mongki][:name]))
+        if validate_name(params[:mongki][:name])
+          update?(@mongki.update_attribute(:name, params[:mongki][:name]))
+        else
+          flash.now[:alert] = "Name 은 영문 알파벳, 숫자, -, _ 조합으로 3자 이상 15자 이하여야 합니다."
+          render :edit, errors: flash.now[:alert]
+        end
       else not(params[:mongki][:password].nil? and params[:mongki][:password_confirmation].nil?)
         update?(@mongki.update_attributes(name: params[:mongki][:name], password: params[:mongki][:password], password_confirmation: params[:mongki][:password_confirmation]))
       end
@@ -62,7 +69,15 @@ class MongkisController < ApplicationController
     else
       render :destroy_fail
     end
-    
+  end
+
+  def auth
+    if Mongki.authenticate(session[:id], params[:mongki][:password])
+      redirect_to edit_mongki_path(session[:id])
+    else
+      flash.now[:alert] = "패스워드가 일치하지 않습니다."
+      render :auth, errors: flash.now[:alert]
+    end
   end
 
   private

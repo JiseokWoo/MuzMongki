@@ -45,30 +45,17 @@ class Mongki
 
   def self.authenticate(id, password)
     mongki = Mongki.find_by(id: id)
-    if mongki && mongki.authenticate(password)
-      true
-    else
-      false
-    end
+    mongki && mongki.authenticate(password)
   end
 
   def authenticate(password)
     password = BCrypt::Engine.hash_secret(password, $mongki_salt)
-
-    if password == self.password_encrypt
-      true
-    else
-      false
-    end
+    password == self.password_encrypt
   end
 
 
   def email_confirm?
-    if self.email_confirm
-      true
-    else
-      false
-    end
+    self.email_confirm
   end
 
   private
