@@ -58,7 +58,7 @@ class MongkisController < ApplicationController
     # delete mongki
     @mongki = Mongki.find_by(_id: params[:id])
 
-    if @mongki.delete
+    if @mongki && @mongki.delete
       reset_session
       render :destroy_success
     else
