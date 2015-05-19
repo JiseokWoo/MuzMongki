@@ -1,0 +1,24 @@
+<div class="center-block">
+  <div class="page-header">
+    <h4><%= @doodle.title %></h4>
+  </div>
+
+  <% if flash[:alert] %>
+      <div class="alert alert-danger" role="alert">
+        <strong>오류 :</strong> <%= flash[:alert] %>
+      </div>
+  <% end %>
+
+  <div class="form-horizontal">
+    <div class="form-group form-group-lg">
+      <div class="col-sm-10">
+        <%= @doodle.contents %>
+      </div>
+    </div>
+    <div class="form-group form-group-lg">
+      <div class="col-sm-10">
+        <%= text_field_tag class: "form-control", placeholder: "#tag #tag", readonly: true %>
+      </div>
+    </div>
+  </div>
+</div>

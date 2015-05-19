@@ -2,11 +2,6 @@ class MongkisController < ApplicationController
   include MongkisHelper
   before_action :check_login, only: [:edit, :update, :destroy, :auth]
 
-  def index
-    # get '/mongkis' mongkis_path
-    # page to list all mongkis
-  end
-
   def show
     # get '/mongkis/id'
     # page to show mongki with id

@@ -1,5 +1,4 @@
 require 'bcrypt'
-require 'digest/sha2'
 
 # TODO : Terms for Muzmongki service
 
@@ -15,8 +14,6 @@ class Mongki
   field :password_encrypt, type: String, default: nil
 
   field :token, type: String, default: nil
-
-  field :house, type: BSON::ObjectId, default: nil
   
   field :email_confirm, type: Boolean, default: false
   field :email_confirm_text, type: String, default: nil
@@ -52,7 +49,6 @@ class Mongki
     password = BCrypt::Engine.hash_secret(password, $mongki_salt)
     password == self.password_encrypt
   end
-
 
   def email_confirm?
     self.email_confirm
