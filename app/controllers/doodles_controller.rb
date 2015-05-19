@@ -33,7 +33,7 @@ class DoodlesController < ApplicationController
       tag_list = params[:doodle][:tags].scan(/#\w{2,10}/i)
       if @doodle.update_attributes(title: params[:doodle][:title], contents: params[:doodle][:contents], tags: tag_list)
         flash.now[:success] = "저장 완료."
-        render :edit, success: flash.now[:success]
+        render :show, success: flash.now[:success]
       else
         flash.now[:alert] = @doodle.errors.full_messages[0]
         render :edit, errors: flash.now[:alert]

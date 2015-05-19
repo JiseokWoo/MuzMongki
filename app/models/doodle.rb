@@ -8,7 +8,7 @@ class Doodle
   field :title, type: String, default: nil
   field :contents, type: String, default: nil
   field :tags, type: Array, default: nil
-
+  
   before_save :handle_tags, :convert_contents
 
   validates_presence_of :owner

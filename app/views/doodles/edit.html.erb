@@ -1,19 +1,13 @@
+<% @doodle.contents.gsub!(/<br>/i,"\r\n") %>
+
 <div class="center-block">
   <div class="page-header">
     <h4>글 수정</h4>
   </div>
 
-  <% @doodle.contents.gsub!(/<br>/i,"\r\n") %>
-
   <% if flash[:alert] %>
       <div class="alert alert-danger" role="alert">
         <strong>오류 :</strong> <%= flash[:alert] %>
-      </div>
-  <% end %>
-
-  <% if flash[:success] %>
-      <div class="alert alert-success" role="alert">
-        <strong>확인 :</strong> <%= flash[:success] %>
       </div>
   <% end %>
 
