@@ -12,12 +12,16 @@
   <div class="form-horizontal">
     <div class="form-group form-group-lg">
       <div class="col-sm-10">
-        <%= @doodle.contents %>
+        <p><%= @doodle.contents.html_safe %></p>
       </div>
     </div>
     <div class="form-group form-group-lg">
       <div class="col-sm-10">
-        <%= text_field_tag class: "form-control", placeholder: "#tag #tag", readonly: true %>
+        <p>
+        <% @doodle.tags.each do |tag| %>
+            <%= tag %>&nbsp;
+        <% end %>
+        </p>
       </div>
     </div>
   </div>

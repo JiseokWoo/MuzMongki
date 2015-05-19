@@ -8,10 +8,9 @@ class DoodlesController < ApplicationController
   def create
     @doodle = Doodle.new(doodle_params)
     @doodle.owner = BSON::ObjectId.from_string(session[:id])
-    #@doodle.tags = doodle_params[:tags].split(%r{#\s})
+    @doodle.tags = doodle_params[:tag_list].scan(/#\w{2,10}/i)
 
     if @doodle.save
-      params[:doodle_id] = @doodle._id
       redirect_to @doodle
     else
       flash.now[:alert] = @doodle.errors.full_messages[0]
@@ -34,6 +33,6 @@ class DoodlesController < ApplicationController
 
   private
   def doodle_params
-    params.require(:doodle).permit(:title, :contents)
+    params.require(:doodle).permit(:title, :contents, :tag_list)
   end
 end
