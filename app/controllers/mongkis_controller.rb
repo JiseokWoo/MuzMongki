@@ -52,6 +52,9 @@ class MongkisController < ApplicationController
       end
 
       if not params[:mongki][:avatar].nil? && result
+        if not @mongki.avatar.url.nil?
+          @mongki.avatar.remove!
+        end
         update?(@mongki.update_attribute(:avatar, params[:mongki][:avatar]))
       else
         update?(result)
@@ -65,7 +68,7 @@ class MongkisController < ApplicationController
     # delete mongki
     @mongki = Mongki.find_by(_id: params[:id])
 
-    if @mongki && @mongki.delete
+    if @mongki && @mongki.destroy
       reset_session
       render :destroy_success
     else
@@ -79,15 +82,6 @@ class MongkisController < ApplicationController
     else
       flash.now[:alert] = "패스워드가 일치하지 않습니다."
       render :auth, errors: flash.now[:alert]
-    end
-  end
-
-  def avatar
-    @mongki = Mongki.find_by(_id: session[:id])
-    content = @mongki.avatar.read
-    if stale?(etag: content, last_modified: @mongki.updated_at.utc, public: true)
-      send_data content, type: @mongki.avatar.file.content_type, disposition: "inline"
-      expires_in 0, public: true
     end
   end
 

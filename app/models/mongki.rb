@@ -23,6 +23,7 @@ class Mongki
 
   before_validation :downcase_field
   before_save :encrypt_password
+  before_destroy :destroy_avatar
 
   # validate of email
   validates_presence_of :email, :message => "주소는 필수 항목 입니다."
@@ -63,6 +64,12 @@ class Mongki
 
   def downcase_field
     self.email= self.email.downcase
+  end
+
+  def destroy_avatar
+    if not self.avatar.url.nil?
+      self.avatar.remove!
+    end
   end
 
 end
