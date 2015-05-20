@@ -51,5 +51,6 @@ gem 'bcrypt'
 gem 'bootstrap-sass'
 
 # gridfs
-gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+gem 'carrierwave-mongoid'
 gem 'mongoid-grid_fs'
+gem 'mini_magick'
