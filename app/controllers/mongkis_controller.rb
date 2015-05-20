@@ -42,14 +42,21 @@ class MongkisController < ApplicationController
     if @mongki
       if params[:mongki][:password].empty? and params[:mongki][:password_confirmation].empty?
         if validate_name(params[:mongki][:name])
-          update?(@mongki.update_attribute(:name, params[:mongki][:name]))
+          result = @mongki.update_attribute(:name, params[:mongki][:name])
         else
           flash.now[:alert] = "Name 은 영문 알파벳, 숫자, -, _ 조합으로 3자 이상 15자 이하여야 합니다."
           render :edit, errors: flash.now[:alert]
         end
       else not(params[:mongki][:password].nil? and params[:mongki][:password_confirmation].nil?)
-        update?(@mongki.update_attributes(name: params[:mongki][:name], password: params[:mongki][:password], password_confirmation: params[:mongki][:password_confirmation]))
+        result = @mongki.update_attributes(name: params[:mongki][:name], password: params[:mongki][:password], password_confirmation: params[:mongki][:password_confirmation])
       end
+
+      if not params[:mongki][:avatar].nil? && result
+        update?(@mongki.update_attribute(:avatar, params[:mongki][:avatar]))
+      else
+        update?(result)
+      end
+
     end
   end
 
@@ -75,9 +82,18 @@ class MongkisController < ApplicationController
     end
   end
 
+  def avatar
+    @mongki = Mongki.find_by(_id: session[:id])
+    content = @mongki.avatar.read
+    if stale?(etag: content, last_modified: @mongki.updated_at.utc, public: true)
+      send_data content, type: @mongki.avatar.file.content_type, disposition: "inline"
+      expires_in 0, public: true
+    end
+  end
+
   private
   def mongki_params
-    params.require(:mongki).permit(:email, :name, :password, :password_confirmation)
+    params.require(:mongki).permit(:email, :name, :password, :password_confirmation, :avatar)
   end
 
   def update?(update_result)

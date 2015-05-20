@@ -13,7 +13,9 @@ class Mongki
   field :name, type: String, default: nil
   field :password_encrypt, type: String, default: nil
 
-  field :token, type: String, default: nil
+  mount_uploader :avatar, AvatarUploader
+
+  #field :token, type: String, default: nil
   
   field :email_confirm, type: Boolean, default: false
   field :email_confirm_text, type: String, default: nil
