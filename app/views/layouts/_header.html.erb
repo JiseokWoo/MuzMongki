@@ -6,12 +6,23 @@
             <img alt="MuzMongki" src="<%= image_url('ci.png') %>">
           </a>
         </div>
+        <div class="nav navbar-nav" style="width: 100px;"></div>
+        <ul class="nav navbar-nav navbar-left">
+          <li><%= link_to "몽키하우스", '#' %></li>
+          <li><%= link_to "검색" %></li>
+          <li><%= link_to "랭킹" %></li>
+          <li><%= link_to "뮤즈몽키?" %></li>
+        </ul>
         <% if logged_in? %>
             <ul class="nav navbar-nav navbar-right">
               <li><%= link_to "정보수정", edit_mongki_path(session[:id]) %></li>
               <li><%= link_to "로그아웃", logout_path, method: "delete" %></li>
             </ul>
         <% else %>
+            <ul class="nav navbar-nav navbar-left">
+              <li></li>
+              <li></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><%= link_to "로그인", login_path %></li>
               <li><%= button_to "회원가입", signup_path, method: "get", class: "btn btn-default navbar-btn" %></li>
