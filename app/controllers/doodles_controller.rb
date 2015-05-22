@@ -34,7 +34,7 @@ class DoodlesController < ApplicationController
       if params[:doodle][:video].nil?
         update?(@doodle.update_attributes(title: params[:doodle][:title], contents: params[:doodle][:contents], tags: tag_list))
       else
-        @doodle.video.remove! if not @doodle.video.url.nil?
+        @doodle.video.remove! if @doodle.video.url
         update?(@doodle.update_attributes(title: params[:doodle][:title], contents: params[:doodle][:contents], tags: tag_list, video: params[:doodle][:video]))
       end
     end
@@ -43,7 +43,7 @@ class DoodlesController < ApplicationController
   def destroy
     @doodle = Doodle.find_by(_id: params[:id])
 
-    if @doodle && @doodle.delete
+    if @doodle && @doodle.destroy
       render :destroy_success
     else
       render :destroy_fail

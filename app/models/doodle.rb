@@ -12,6 +12,7 @@ class Doodle
   mount_uploader :video, VideoUploader
   
   before_save :handle_tags, :convert_contents
+  before_destroy :destroy_video
 
   validates_presence_of :owner
 
@@ -31,5 +32,11 @@ class Doodle
 
   def convert_contents
     self.contents.gsub!(/\r\n/m,"<br>")
+  end
+
+  def destroy_video
+    if self.video.url
+      self.video.remove!
+    end
   end
 end

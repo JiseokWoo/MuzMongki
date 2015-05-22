@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'streamio-ffmpeg'
+
 class VideoUploader < CarrierWave::Uploader::Base
   include CarrierWave::Video
   # Include RMagick or MiniMagick support:
@@ -24,7 +26,7 @@ class VideoUploader < CarrierWave::Uploader::Base
   #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
   # end
 
-  process encode_video: [:mp4]
+  process encode_video: [:mp4, :custom => "-acodec aac -strict experimental", resolution: "640x480"]
   # Process files as they are uploaded:
   # process :scale => [200, 300]
   #
