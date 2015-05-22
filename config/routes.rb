@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   post 'login' => 'login#create'
   delete 'logout' => 'login#destroy'
   get '/gridfs/mongki/avatar/:id/:filename' => 'gridfs#avatar'
+  get '/gridfs/doodle/video/:id/:filename' => 'gridfs#video'
 
   resources :mongkis
   resources :doodles

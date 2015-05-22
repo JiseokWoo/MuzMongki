@@ -1,6 +1,19 @@
+<% @owner = Mongki.find_by(_id: @doodle.owner) %>
 <div class="center-block" style="width: 700px;">
-  <div class="page-header">
-    <h4><%= @doodle.title %></h4>
+  <div class="page-header row">
+    <div class="col-md-8">
+      <h4><%= @doodle.title %></h4>
+    </div>
+    <div class="col-md-1">
+      <% if not @owner.avatar.url.nil? %>
+          <%= image_tag @owner.avatar.url %>
+      <% else %>
+          <%= image_tag 'logo_40x40.png' %>
+      <% end %>
+    </div>
+    <div class="col-md-1">
+      <h6><%= @owner.name %></h6>
+    </div>
   </div>
 
   <% if flash[:alert] %>
@@ -13,6 +26,10 @@
       <div class="alert alert-success" role="alert">
         <strong>확인 :</strong> <%= flash[:success] %>
       </div>
+  <% end %>
+
+  <% if not @doodle.video.url.nil? %>
+        <%= video_tag [@doodle.video.url], :controls => true, class: "center-block" %>
   <% end %>
 
   <div class="form-horizontal">
@@ -36,7 +53,7 @@
           <li>&nbsp;</li>
           <li><%= button_tag "삭제", data: {toggle: "modal", target: "#destroyDoodle"}, class: "btn btn-danger navbar-btn" %></li>
         </ul>
-  <% end %>
+    <% end %>
 
   </div>
 </div>

@@ -31,12 +31,11 @@ class DoodlesController < ApplicationController
 
     if @doodle
       tag_list = params[:doodle][:tags].scan(/#\w{2,10}/i)
-      if @doodle.update_attributes(title: params[:doodle][:title], contents: params[:doodle][:contents], tags: tag_list)
-        flash.now[:success] = "저장 완료."
-        render :show, success: flash.now[:success]
+      if params[:doodle][:video].nil?
+        update?(@doodle.update_attributes(title: params[:doodle][:title], contents: params[:doodle][:contents], tags: tag_list))
       else
-        flash.now[:alert] = @doodle.errors.full_messages[0]
-        render :edit, errors: flash.now[:alert]
+        @doodle.video.remove! if not @doodle.video.url.nil?
+        update?(@doodle.update_attributes(title: params[:doodle][:title], contents: params[:doodle][:contents], tags: tag_list, video: params[:doodle][:video]))
       end
     end
   end
@@ -53,6 +52,16 @@ class DoodlesController < ApplicationController
 
   private
   def doodle_params
-    params.require(:doodle).permit(:title, :contents, :tag_list)
+    params.require(:doodle).permit(:title, :contents, :tag_list, :video)
+  end
+
+  def update?(result)
+    if result
+      flash.now[:success] = "저장 완료."
+      render :show, success: flash.now[:success]
+    else
+      flash.now[:alert] = @doodle.errors.full_messages[0]
+      render :edit, errors: flash.now[:alert]
+    end
   end
 end

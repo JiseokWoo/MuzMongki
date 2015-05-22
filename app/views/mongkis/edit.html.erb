@@ -20,7 +20,6 @@
         <div class="form-group form-group-lg">
           <% if not @mongki.avatar.url.nil? %>
               <%= image_tag @mongki.avatar.url, class: "center-block img-thumbnail" %>
-              <%= image_tag @mongki.avatar.url(:thumb), class: "center-block img-thumbnail" %>
           <% else %>
               <%= image_tag 'logo_40x40.png', class: "center-block img-thumbnail" %>
           <% end %>

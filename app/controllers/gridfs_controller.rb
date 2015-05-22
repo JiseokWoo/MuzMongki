@@ -7,4 +7,13 @@ class GridfsController < ApplicationController
       expires_in 0, public: true
     end
   end
+
+  def video
+    @doodle = Doodle.find_by(_id: params[:id])
+    content = @doodle.video.read
+    if stale?(etag: content, last_modified: @doodle.updated_at.utc, public: true)
+      send_data content, type: @doodle.video.file.content_type, disposition: "inline"
+      expires_in 0, public: true
+    end
+  end
 end
