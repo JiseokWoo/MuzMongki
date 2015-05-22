@@ -43,6 +43,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Mongo Driver
 gem 'mongoid'
+gem 'mongo_session_store-rails4'
 
 # Password Encryption
 gem 'bcrypt'
